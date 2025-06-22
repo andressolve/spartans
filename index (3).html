@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Battle of Thermopylae</title>
+
+  <!-- Title font -->
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ---------- Layout ---------- */
+    body{
+      margin:0;
+      background:#111;
+      color:#eee;
+      font-family:Arial, sans-serif;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      min-height:100vh;
+    }
+
+    /* ---------- Title ---------- */
+    h1{
+      font-family:'League Spartan', sans-serif;
+      font-size:2.6rem;
+      margin:1rem 0 0.5rem;
+      letter-spacing:1px;
+      text-align:center;
+    }
+
+    /* ---------- Image viewer ---------- */
+    #viewer{
+      position:relative;
+      width:70vw;          /* overall max box width  */
+      max-width:700px;
+      display:flex;        /* so image stays centred if narrower */
+      justify-content:center;
+    }
+
+    #viewer img{
+      max-width:100%;      /* never wider than the viewer */
+      max-height:85vh;     /* never taller than 85% of screen height */
+      width:auto;          /* let browser decide */
+      height:auto;         /* keeps the aspect ratio locked */
+      border:4px solid #333;
+      box-shadow:0 0 15px rgba(0,0,0,0.7);
+    }
+
+    /* ---------- Navigation buttons ---------- */
+    .navBtn{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      border:none;
+      background:rgba(0,0,0,0.6);
+      color:#fff;
+      font-size:2.3rem;
+      padding:0.4rem 1rem;
+      cursor:pointer;
+      transition:background 0.2s;
+      user-select:none;
+    }
+    .navBtn:hover{ background:rgba(0,0,0,0.85); }
+    #prev{ left:0; }
+    #next{ right:0; }
+  </style>
+</head>
+
+<body>
+  <h1>Battle of Thermopylae</h1>
+
+  <div id="viewer">
+    <button id="prev" class="navBtn" aria-label="Previous page">&#9664;</button>
+    <img id="comicImg" src="300image1.png" alt="Panel 1 of Thermopylae graphic novel">
+    <button id="next" class="navBtn" aria-label="Next page">&#9654;</button>
+  </div>
+
+  <script>
+    const total = 10;           // total number of PNGs
+    let current = 1;
+
+    const img     = document.getElementById('comicImg');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+
+    function updateButtons(){
+      prevBtn.style.visibility = (current === 1)    ? 'hidden' : 'visible';
+      nextBtn.style.visibility = (current === total) ? 'hidden' : 'visible';
+    }
+
+    function showPage(n){
+      current = n;
+      img.src = `300image${current}.png`;
+      img.alt = `Panel ${current} of Thermopylae graphic novel`;
+      updateButtons();
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if(current > 1) showPage(current - 1);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if(current < total) showPage(current + 1);
+    });
+
+    /* Keyboard arrow navigation */
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'ArrowLeft'  && current > 1)    showPage(current - 1);
+      if(e.key === 'ArrowRight' && current < total) showPage(current + 1);
+    });
+
+    updateButtons();   // initial state
+  </script>
+</body>
+</html>
